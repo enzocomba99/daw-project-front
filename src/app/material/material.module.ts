@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [],
@@ -15,7 +16,8 @@ import { MatTableModule } from '@angular/material/table';
     MatInputModule,
     MatSlideToggleModule,
     MatFormFieldModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule
   ],
   imports: [
     CommonModule

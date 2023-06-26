@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { EspacioFisico } from 'src/app/interfaces/espacio-fisico';
+import { PageResponse } from 'src/app/interfaces/page-response';
 import { EspacioFisicoService } from 'src/app/services/espacio-fisico.service';
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-espacio-fisico',
@@ -8,32 +10,23 @@ import { EspacioFisicoService } from 'src/app/services/espacio-fisico.service';
   styleUrls: ['./espacio-fisico.component.scss']
 })
 export class EspacioFisicoComponent {
-  constructor(private espaciosService: EspacioFisicoService) { }
+  constructor(private espaciosService: EspacioFisicoService, private spinner: NgxSpinnerService) { }
   displayedColumns: string[] = ['name', 'description', 'capacity'];
-  dataSource: EspacioFisico[]= [];
-  totalItems: number = 0;
-  pageSize: number = 10;
+  espaciosFisicoPage!: PageResponse<EspacioFisico[]>;
 
-  ngOnInit() {
-    this.fetchItems();
-  }
+  async ngOnInit() {
+    await this.spinner.show();
+    await this.fetchItems();
+    await this.spinner.hide();
+  }  
 
-  fetchItems(): void {
-    this.espaciosService.getItems().subscribe(
-      response => {
-        // Handle the response data
-        response.forEach((espacioFisico) => {
-          this.dataSource.push(espacioFisico)
-        });
-        
-        console.log(this.dataSource);
-        //this.dataSource = response.currentPageData;
-        //this.totalItems = response.totalCount;
+
+  async fetchItems() {
+    this.espaciosService.getEspaciosFisicos().subscribe({
+      next: (v) => {
+        this.espaciosFisicoPage = v;
       },
-      error => {
-        // Handle errors
-        console.error(error);
-      }
-    );
+      error: (e) => console.error(e)
+    });
   }
 }
