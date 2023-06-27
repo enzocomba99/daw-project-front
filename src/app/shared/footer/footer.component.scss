@@ -1,0 +1,59 @@
+footer {
+    min-height: 15vh !important;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Estilos para los enlaces del footer */
+  footer a {
+    color: #333;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Estilos para el texto del footer */
+  footer p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilos para el logo o imagen del footer */
+  .angular-image {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  .springboot-image {
+    width: 37px;
+    height: 37px;
+    margin-bottom: 10px;
+  }
+  .material-image {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  /* Estilos para los íconos de redes sociales en el footer */
+  footer .social-icons {
+    margin-top: 10px;
+  }
+  
+  footer .social-icons a {
+    color: #333;
+    margin: 0 5px;
+  }
+  
+  footer .social-icons a:hover {
+    color: #555;
+  }
+  
+  footer .copyright {
+    font-size: 12px;
+    color: #999;
+    margin-top: 10px;
+  }

@@ -1,0 +1,21 @@
+<!-- <div class="modal-header align-items-center px-3 pb-0">
+  <h4 class="modal-title" id="modal-basic-title">{{title}}</h4>
+  <button type="button" class="btn btn-danger close" (click)="activeModal.close({success:false})">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body px-3">
+  <label>{{message}}</label>
+  <div class="pt-3 text-right">
+    <button (click)="activeModal.close({success:true})" type="submit" class="btn btn-danger">Confirmar</button>
+    <button type="button" class="btn" aria-label="Close" (click)="activeModal.close({success:false})">Cancelar</button>
+  </div>
+</div> -->
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  {{data.message}}
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onNoClick()">No</button>
+  <button mat-button mat-dialog-close cdkFocusInitial (click)="onYesClick()">Si</button>
+</div>

@@ -1,0 +1,33 @@
+<div class=""> 
+  <mat-toolbar color="secondary">
+
+
+    <span class="example-spacer"></span>
+    <div fxShow="true" fxHide.lt-md="true">
+
+      <mat-list style="display: flex; flex-direction: row;">
+        <mat-list-item mat-button class="companyName center" style="display: inline;" routerLink="/">
+          <a mat-button routerLink=""><img class="dog" src="assets/img/dog.jpeg" alt="Material UI"></a>
+        </mat-list-item>
+        <mat-divider style="margin: 0 8px;"></mat-divider>
+        <mat-list-item style="display: inline;"><a mat-button routerLink="espacios">Espacios</a></mat-list-item>
+        <mat-divider style="margin: 0 8px;"></mat-divider>
+        <mat-list-item style="display: inline;"><a mat-button routerLink="">Recursos</a></mat-list-item>
+        <mat-divider style="margin: 0 8px;"></mat-divider>
+        <mat-list-item style="display: inline;"><a mat-button routerLink="">Clientes</a></mat-list-item>
+        <mat-divider style="margin: 0 8px;"></mat-divider>
+        <mat-list-item style="display: inline;"><a mat-button routerLink="">Reservas</a></mat-list-item>
+      </mat-list>
+    </div>
+  </mat-toolbar>
+  <mat-sidenav-container fxFlexFill class="example-container">
+    <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over"  opened="false" fxHide.gt-sm="true">
+      <div fxLayout="column">
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content fxFlexFill>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <app-footer fxFlexFill></app-footer>
+</div>

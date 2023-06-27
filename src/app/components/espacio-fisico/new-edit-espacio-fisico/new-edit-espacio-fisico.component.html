@@ -1,0 +1,47 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "fire" [fullScreen] = "true">
+    <p style="color: white" > Cargando... </p>
+  </ngx-spinner>
+
+  <div class="container mt-4">
+    <h1>Espacio Físico</h1>
+    <form [formGroup]="espacioFisicoForm" fxLayout="column" fxLayoutAlign="start">
+      <mat-form-field>
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre" required>
+      </mat-form-field>
+    
+      <mat-form-field>
+        <mat-label>Capacidad</mat-label>
+        <input matInput formControlName="capacidad" type="number" min=0 required>
+      </mat-form-field>
+    
+      <mat-form-field>
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcion"></textarea>
+      </mat-form-field>
+
+      <div fxLayout="row" fxLayoutAlign="start center">
+        <mat-checkbox formControlName="habilitado">Habilitado</mat-checkbox>
+      </div>
+      
+      <mat-form-field class="mt-4">
+        <mat-label>Recursos tecnológicos</mat-label>
+        <mat-select formControlName="recursosId" multiple [compareWith]="compareRecursos">
+          <mat-option *ngFor="let recurso of recursosTecnologicos" [value]="recurso.id">{{ recurso.nombre }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+    </form>
+
+  <div class="d-flex justify-content-end align-items-right mb-2">
+    <div>
+      <button mat-raised-button color="accent" type="cancel" (click)="cancel()">
+        <span class="btn-inner--text">Cancelar</span>
+      </button>
+    </div>
+    <div>
+      <button *ngIf="editMode" mat-raised-button color="primary" type="submit" (click)="editArticulo()" [disabled]="!espacioFisicoForm.valid">Editar Espacio Fisico</button>
+      <button *ngIf="!editMode" mat-raised-button color="primary" type="submit" style="margin-left:10px" [disabled]="!espacioFisicoForm.valid" (click)="newEspacioFisico()">Crear Espacio Fisico</button>
+    </div>
+  </div>
+</div>
