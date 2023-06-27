@@ -26,4 +26,7 @@ export class EspacioFisicoService {
   newEspacioFisico(espacioFisico: EspacioFisico): Observable<EspacioFisico> {
     return this.http.post<EspacioFisico>('http://localhost:8080/espacios',espacioFisico);
   }
+  updateEspacioFisico(espacioFisico: EspacioFisico, espacioFisicoId: string): Observable<EspacioFisico> {
+    return this.http.put<EspacioFisico>('http://localhost:8080/espacios/'+espacioFisicoId,espacioFisico);
+  }
 }

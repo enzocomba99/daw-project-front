@@ -71,7 +71,6 @@ export class NewEditEspacioFisicoComponent {
   async setForm() {
 
     this.espacioFisico = await firstValueFrom(this.espacioFisicoService.getEspacioFisicoById(this.espacioFisicoId));
-
     if(this.espacioFisico){
       this.espacioFisicoForm.get('nombre')?.setValue(this.espacioFisico.nombre);
       this.espacioFisicoForm.get('descripcion')?.setValue(this.espacioFisico.descripcion);
@@ -89,6 +88,7 @@ export class NewEditEspacioFisicoComponent {
     this.espacioFisicoService.newEspacioFisico(this.espacioFisicoForm.value).subscribe({
       complete: () => {
         this.snackBar.open('Se ha creado el espacio físico correctamente.',"Cerrar");
+        this.router.navigateByUrl('/espacios');
         this.spinner.hide();
       },
       error: (e) => {
@@ -107,18 +107,31 @@ export class NewEditEspacioFisicoComponent {
     this.router.navigateByUrl('/espacios');
   }
 
+  mapIdArray(inputArray: any[]): string[] {
+    // Verificar si el primer elemento del array es un objeto con una propiedad "id"
+    if (typeof inputArray[0] === 'object' && 'id' in inputArray[0]) {
+      // Realizar el mapeo si la estructura del array coincide con objetos que contienen una propiedad "id"
+      return inputArray.map(item => item.id);
+    } else {
+      // Devolver el array sin cambios si la estructura ya coincide con el formato deseado
+      return inputArray;
+    }
+  }
+
   async editArticulo() {
-    // await this.spinner.show();
-    // this.articuloService.modificarArticulo(this.articuloForm.value, this.articuloId).subscribe(
-    //   async (response) => {
-    //     this.toaster.showSuccess('Se ha editado el articulo correctamente.');
-    //     await this.spinner.hide();
-    //     this.location.back();
-    //   },
-    //   async (error) => {
-    //     this.toaster.showError(error.error.message);
-    //     await this.spinner.hide();
-    //   }
-    // );
+    await this.spinner.show();
+    this.espacioFisicoForm.value.recursosId = this.mapIdArray(this.espacioFisicoForm.value.recursosId);
+    this.espacioFisicoService.updateEspacioFisico(this.espacioFisicoForm.value, this.espacioFisicoId).subscribe({
+      complete: () => {
+        this.snackBar.open('Se ha editado el espacio físico correctamente.',"Cerrar");
+        this.router.navigateByUrl('/espacios');
+        this.spinner.hide();
+      },
+      error: (e) => {
+        this.snackBar.open(e.error.message,"Cerrar");
+        console.error(e);
+        this.spinner.hide();
+      }
+    });
   }
 }
