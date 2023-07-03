@@ -35,13 +35,13 @@
 
   <div class="d-flex justify-content-end align-items-right mb-2">
     <div>
-      <button mat-raised-button color="accent" type="cancel" (click)="cancel()">
+      <button mat-raised-button color="warn" type="cancel" (click)="cancel()">
         <span class="btn-inner--text">Cancelar</span>
       </button>
     </div>
     <div>
-      <button *ngIf="editMode" mat-raised-button color="primary" type="submit" (click)="editArticulo()" [disabled]="!espacioFisicoForm.valid">Editar Espacio Fisico</button>
-      <button *ngIf="!editMode" mat-raised-button color="primary" type="submit" style="margin-left:10px" [disabled]="!espacioFisicoForm.valid" (click)="newEspacioFisico()">Crear Espacio Fisico</button>
+      <button *ngIf="editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px" (click)="editArticulo()" [disabled]="!espacioFisicoForm.valid">Editar Espacio Fisico</button>
+      <button *ngIf="!editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px; " [disabled]="!espacioFisicoForm.valid" (click)="newEspacioFisico()">Crear Espacio Fisico</button>
     </div>
   </div>
 </div>

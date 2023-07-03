@@ -3,9 +3,25 @@
 </ngx-spinner>
 
 <ng-container *ngIf="espaciosFisicoPage">
-  <div class="d-flex justify-content-around mt-3">
+  <div class="d-flex justify-content-around mt-3 align-items-center">
     <h1>Espacios Físicos</h1>
-    <button mat-stroked-button routerLink="new">Agregar espacio fisico</button>
+    <form [formGroup]="filterForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+    
+      <mat-form-field appearance="fill">
+        <mat-label>Capacidad</mat-label>
+        <input matInput formControlName="capacity" />
+      </mat-form-field>
+    
+      <button mat-raised-button color="primary">
+        <mat-icon>filter_list</mat-icon>
+        Filtrar
+      </button>
+    </form>
+    <button mat-raised-button color="accent" routerLink="new">Agregar espacio fisico</button>
   </div>
     <div class="d-flex flex-column">
 
@@ -30,7 +46,7 @@
             <th mat-header-cell *matHeaderCellDef [style.background-color]="headerColor"> Acciones </th>
             <td mat-cell *matCellDef="let element">
               <button mat-icon-button color="secondary" [routerLink]="['edit',element.id]" title="Editar"><mat-icon>edit</mat-icon></button>
-              <button mat-icon-button color="primary" (click)="delete(element)" title="Borrar"><mat-icon>delete</mat-icon></button>
+              <button mat-icon-button color="warn" (click)="delete(element)" title="Borrar"><mat-icon>delete</mat-icon></button>
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

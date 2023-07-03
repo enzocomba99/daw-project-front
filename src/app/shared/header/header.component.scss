@@ -3,7 +3,7 @@
   }
   
   .mat-toolbar {
-    height: 7vh;
+    height: 8vh;
   }
 
   .dog{
@@ -45,3 +45,14 @@
     text-align: center;
   }
   
+
+  .blue-snackbar {
+    background: #2196F3;
+  }
+  .mat-mdc-snack-bar-container {
+    &.blue-snackbar {
+      --mdc-snackbar-container-color: #2196f3;
+      --mat-mdc-snack-bar-button-color: #fff;
+      --mdc-snackbar-supporting-text-color: #fff;
+    }
+  }

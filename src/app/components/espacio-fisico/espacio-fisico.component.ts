@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-espacio-fisico',
@@ -22,11 +23,14 @@ export class EspacioFisicoComponent {
     private modalService: NgbModal,
     private router: Router,
     private snackBar: MatSnackBar,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog) { 
+      this.filterForm = new FormGroup({})
+    }
   displayedColumns: string[] = ['name', 'description', 'capacity','actions'];
   espaciosFisicoPage!: PageResponse<EspacioFisico[]>;
   currentPage: number = 0;
   headerColor = 'rgb(88,88,88)';
+  filterForm: FormGroup;
 
   ngOnInit() {
     this.fetchItems(this.currentPage);

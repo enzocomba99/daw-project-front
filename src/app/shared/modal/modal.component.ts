@@ -20,4 +20,8 @@ export class ModalComponent {
   onYesClick(): void {
     this.dialogRef.close('Si'); // Cierra el diálogo y pasa 'Si' como resultado
   }
+
+
+
+  
 }

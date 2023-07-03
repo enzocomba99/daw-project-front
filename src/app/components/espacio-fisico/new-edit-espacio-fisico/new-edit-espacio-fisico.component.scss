@@ -60,3 +60,12 @@ input[type="number"] {
     border-width: 2px;
   }
   
+
+  .new-button:not(:disabled){
+    background-color:#90DA5C;
+  }
+  .new-button:disabled{
+    background-color: #5A7447;
+  }
+
+ 
