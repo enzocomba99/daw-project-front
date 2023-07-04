@@ -10,11 +10,13 @@ import { HeaderComponent } from '../shared/header/header.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { NewEditEspacioFisicoComponent } from './espacio-fisico/new-edit-espacio-fisico/new-edit-espacio-fisico.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { RecursoTecnologicoComponent } from './recurso-tecnologico/recurso-tecnologico.component';
 
 @NgModule({
     declarations: [
         EspacioFisicoComponent,
-        NewEditEspacioFisicoComponent
+        NewEditEspacioFisicoComponent,
+        RecursoTecnologicoComponent
     ],
     exports: [
     ],

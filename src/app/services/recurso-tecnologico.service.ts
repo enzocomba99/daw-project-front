@@ -11,9 +11,11 @@ export class RecursoTecnologicoService {
 
   constructor(private http: HttpClient) { }
 
-  getRecursosTecnologicos(): Observable<RecursoTecnologico[]> {
-    return this.http.get<RecursoTecnologico[]>('http://localhost:8080/recursos');
+  getRecursosTecnologicos(page: number): Observable<PageResponse<RecursoTecnologico[]>> {
+    return this.http.get<PageResponse<RecursoTecnologico[]>>(`http://localhost:8080/recursos?page=${page}&size=20`);
   }
+
+
 
   deleteRecursoTecnologico(id: string) {
     return this.http.delete('http://localhost:8080/recursos/'+id);
