@@ -10,6 +10,7 @@ import { HeaderComponent } from '../shared/header/header.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { NewEditEspacioFisicoComponent } from './espacio-fisico/new-edit-espacio-fisico/new-edit-espacio-fisico.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         NgxSpinnerModule,
         AppRoutingModule,
         ReactiveFormsModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+        BrowserAnimationsModule 
     ],
 
 })

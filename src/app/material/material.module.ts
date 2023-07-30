@@ -17,6 +17,7 @@ import {MatSelectModule } from '@angular/material/select';
 import {MatCheckboxModule } from '@angular/material/checkbox';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSortModule} from '@angular/material/sort';
 
 @NgModule({
   declarations: [],
@@ -36,7 +37,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatCheckboxModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSortModule,
   ],
   providers: [{provide: MatPaginatorIntl, useClass: PaginatorService}],
   imports: [
