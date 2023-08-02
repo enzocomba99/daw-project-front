@@ -23,13 +23,16 @@ export class EspacioFisicoComponent {
   @ViewChild(MatSort) sort: MatSort = new MatSort();
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
-  constructor(private espaciosService: EspacioFisicoService,
-    private spinner: NgxSpinnerService,
-    public paginatorCustom: MatPaginatorIntl,
-    private modalService: NgbModal,
-    private router: Router,
-    private snackBar: MatSnackBar,
-    public dialog: MatDialog) { 
+  constructor(
+      private espaciosService: EspacioFisicoService,
+      private spinner: NgxSpinnerService,
+      public paginatorCustom: MatPaginatorIntl,
+      private modalService: NgbModal,
+      private router: Router,
+      private snackBar: MatSnackBar,
+      public dialog: MatDialog
+    ) { 
+      
     }
   displayedColumns: string[] = ['nombre', 'descripcion', 'capacidad','recursos','actions'];
   espaciosFisicoPage!: PageResponse<EspacioFisico[]>;
@@ -59,7 +62,7 @@ export class EspacioFisicoComponent {
       this.sort.active,
       this.sort.direction,
     ));
-
+    
     if (response !== undefined) {
       this.espaciosFisicoPage = response;
       this.totalElements = this.espaciosFisicoPage.totalElements;

@@ -1,0 +1,66 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "fire" [fullScreen] = "true">
+    <p style="color: white" > Cargando... </p>
+  </ngx-spinner>
+  
+  <ng-container *ngIf="recursosTecnologicos">
+    <div class="d-flex justify-content-around mt-3 align-items-center">
+      <h1>Recursos tecnologicos</h1>
+      <div>
+
+        <mat-form-field appearance="fill" style="margin-right: 15px;">
+          <mat-label>Nombre</mat-label>
+          <input matInput [(ngModel)]="filterName"/>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="fetchItems(0)" style="margin-bottom:15px">
+          <mat-icon>filter_list</mat-icon>
+          Filtrar
+        </button>
+      </div>
+      <button mat-raised-button color="accent" routerLink="new">Agregar recurso tecnológico</button>
+    </div>
+      <div class="d-flex flex-column">
+  
+        <div class="first-element p-2">
+          <table 
+            mat-table [dataSource]="recursosTecnologicos.content" 
+            class="mat-elevation-z8"
+            matSort
+            matSortActive="nombre"
+            matSortDisableClear
+            matSortDirection="asc"
+            (matSortChange)="sortData()"
+          >
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef [style.background-color]="headerColor" mat-sort-header> Nombre </th>
+              <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="descripcion">
+              <th mat-header-cell *matHeaderCellDef [style.background-color]="headerColor" mat-sort-header> Descripción </th>
+              <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+            </ng-container>
+            
+  
+            <ng-container  matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef [style.background-color]="headerColor"> Acciones </th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="secondary" [routerLink]="['edit',element.id]" title="Editar"><mat-icon>edit</mat-icon></button>
+                <button mat-icon-button color="warn" (click)="delete(element)" title="Borrar"><mat-icon>delete</mat-icon></button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+        <div class="second-element p-2">
+          <mat-paginator 
+            [length]="recursosTecnologicos.totalElements"
+            [pageSize]="10"
+            [pageIndex]="currentPage"
+            [hidePageSize]="true"
+            (page)="onPageChange($event)"
+            [emptyRowsWhenPaging] = "false">
+          </mat-paginator>
+        </div>
+      </div>
+  </ng-container>
