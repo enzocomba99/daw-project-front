@@ -46,7 +46,7 @@ export class NewEditEspacioFisicoComponent {
 
     this.spinner.show();
 
-    this.recursoTecnologicoService.getRecursosTecnologicos().subscribe({
+    this.recursoTecnologicoService.getRecursosTecnologicos(undefined, undefined, undefined, undefined, '100').subscribe({
       next: (v) => {
         this.recursosTecnologicosPage = v;
         this.spinner.hide();

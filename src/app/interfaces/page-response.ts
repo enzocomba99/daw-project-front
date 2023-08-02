@@ -1,7 +1,7 @@
 import { MatPaginator } from "@angular/material/paginator";
 
 export interface PageResponse<T> {
-  content: T;
+  content: T[];
   pageable: any;
   totalElements: number;
   totalPages: number;

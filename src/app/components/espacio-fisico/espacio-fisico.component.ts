@@ -62,7 +62,7 @@ export class EspacioFisicoComponent {
       this.sort.active,
       this.sort.direction,
     ));
-
+    
     if (response !== undefined) {
       this.espaciosFisicoPage = response;
       this.totalElements = this.espaciosFisicoPage.totalElements;

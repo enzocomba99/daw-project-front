@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { PageResponse } from '../interfaces/page-response';
 import { Injectable } from '@angular/core';
 import { RecursoTecnologico } from '../interfaces/recurso-tecnologico';
+import { SortDirection } from '@angular/material/sort';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class RecursoTecnologicoService {
 
   constructor(private http: HttpClient) { }
 
-  getRecursosTecnologicos(page: number): Observable<PageResponse<RecursoTecnologico[]>> {
-    return this.http.get<PageResponse<RecursoTecnologico[]>>(`http://localhost:8080/recursos?page=${page}&size=20`);
+  getRecursosTecnologicos(page: number = 0, sort: string = 'nombre', order: SortDirection = 'asc', filter: string = '', size: string = '10'): Observable<PageResponse<RecursoTecnologico>> {
+    return this.http.get<PageResponse<RecursoTecnologico>>(`http://localhost:8080/recursos?nombre=${filter}&page=${page}&size=${size}&sort=${sort},${order}`);
   }
 
   getRecursoTecnologicoById(recursoTecnologicoId: string): Observable<RecursoTecnologico> {
@@ -30,4 +31,8 @@ export class RecursoTecnologicoService {
   deleteRecursoTecnologico(id: string) {
     return this.http.delete('http://localhost:8080/recursos/'+id);
   }
+}
+
+export interface MyResponse {
+  message: string;
 }
