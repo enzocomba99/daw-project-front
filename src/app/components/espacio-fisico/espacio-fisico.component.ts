@@ -17,13 +17,15 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./espacio-fisico.component.scss']
 })
 export class EspacioFisicoComponent {
-  constructor(private espaciosService: EspacioFisicoService,
-    private spinner: NgxSpinnerService,
-    public paginatorCustom: MatPaginatorIntl,
-    private modalService: NgbModal,
-    private router: Router,
-    private snackBar: MatSnackBar,
-    public dialog: MatDialog) { 
+  constructor(
+      private espaciosService: EspacioFisicoService,
+      private spinner: NgxSpinnerService,
+      public paginatorCustom: MatPaginatorIntl,
+      private modalService: NgbModal,
+      private router: Router,
+      private snackBar: MatSnackBar,
+      public dialog: MatDialog
+    ) { 
       this.filterForm = new FormGroup({})
     }
   displayedColumns: string[] = ['name', 'description', 'capacity','actions'];

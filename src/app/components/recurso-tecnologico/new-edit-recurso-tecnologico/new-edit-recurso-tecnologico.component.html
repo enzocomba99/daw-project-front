@@ -1,0 +1,32 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "fire" [fullScreen] = "true">
+  <p style="color: white" > Cargando... </p>
+</ngx-spinner>
+
+<div class="container mt-4">
+  <h1>Espacio Físico</h1>
+  <form [formGroup]="recursoTecnologicoForm" fxLayout="column" fxLayoutAlign="start">
+    <mat-form-field>
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" required>
+    </mat-form-field>
+  
+    <mat-form-field>
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="descripcion"></textarea>
+    </mat-form-field>
+
+ 
+  </form>
+
+<div class="d-flex justify-content-end align-items-right mb-2">
+  <div>
+    <button mat-raised-button color="warn" type="cancel" (click)="cancel()">
+      <span class="btn-inner--text">Cancelar</span>
+    </button>
+  </div>
+  <div>
+    <button *ngIf="editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px" (click)="editArticulo()" [disabled]="!recursoTecnologicoForm.valid">Editar Recurso Tecnologico</button>
+    <button *ngIf="!editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px; " [disabled]="!recursoTecnologicoForm.valid" (click)="newRecursoTecnologico()">Crear Recurso Tecnologico</button>
+  </div>
+</div>
+</div>
