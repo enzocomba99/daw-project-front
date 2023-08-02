@@ -28,8 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         NgxSpinnerModule,
         AppRoutingModule,
         ReactiveFormsModule,
-        FlexLayoutModule,
-        BrowserAnimationsModule 
+        FlexLayoutModule
     ],
 
 })

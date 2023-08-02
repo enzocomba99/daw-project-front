@@ -27,7 +27,7 @@
       <mat-form-field class="mt-4">
         <mat-label>Recursos tecnológicos</mat-label>
         <mat-select formControlName="recursosId" multiple [compareWith]="compareRecursos">
-          <mat-option *ngFor="let recurso of recursosTecnologicos" [value]="recurso.id">{{ recurso.nombre }}</mat-option>
+          <mat-option *ngFor="let recurso of recursosTecnologicosPage?.content" [value]="recurso.id">{{ recurso.nombre }}</mat-option>
         </mat-select>
       </mat-form-field>
     

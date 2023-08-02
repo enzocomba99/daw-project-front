@@ -31,7 +31,7 @@ export class EspacioFisicoComponent {
     private snackBar: MatSnackBar,
     public dialog: MatDialog) { 
     }
-  displayedColumns: string[] = ['nombre', 'descripcion', 'capacidad','actions'];
+  displayedColumns: string[] = ['nombre', 'descripcion', 'capacidad','recursos','actions'];
   espaciosFisicoPage!: PageResponse<EspacioFisico[]>;
   currentPage: number = 0;
   headerColor = 'rgb(88,88,88)';
@@ -41,7 +41,6 @@ export class EspacioFisicoComponent {
   totalElements: number = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
-  data: EspacioFisico[] = [];
 
   ngOnInit() {
     this.fetchItems();

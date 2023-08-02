@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PageResponse } from '../interfaces/page-response';
 import { Injectable } from '@angular/core';
@@ -11,8 +11,11 @@ export class RecursoTecnologicoService {
 
   constructor(private http: HttpClient) { }
 
-  getRecursosTecnologicos(): Observable<RecursoTecnologico[]> {
-    return this.http.get<RecursoTecnologico[]>('http://localhost:8080/recursos');
+  getRecursosTecnologicos(): Observable<PageResponse<RecursoTecnologico>> {
+    let params = new HttpParams();
+    params = params.append('page', 0);
+    params = params.append('size', 200);
+    return this.http.get<PageResponse<RecursoTecnologico>>('http://localhost:8080/recursos', { params });
   }
 
   deleteRecursoTecnologico(id: string) {

@@ -8,6 +8,7 @@ import { RecursoTecnologico } from 'src/app/interfaces/recurso-tecnologico';
 import { EspacioFisicoService } from 'src/app/services/espacio-fisico.service';
 import { RecursoTecnologicoService } from 'src/app/services/recurso-tecnologico.service';
 import { firstValueFrom } from 'rxjs';
+import { PageResponse } from 'src/app/interfaces/page-response';
 
 @Component({
   selector: 'app-new-edit-espacio-fisico',
@@ -18,9 +19,7 @@ export class NewEditEspacioFisicoComponent {
 
   espacioFisicoForm: FormGroup;
 
-  recursosTecnologicos: RecursoTecnologico[] = [];
-  recursosTecnologicosCopy: RecursoTecnologico[] = [];
-
+  recursosTecnologicosPage!: PageResponse<RecursoTecnologico>;
   espacioFisicoId!: string;
   editMode: boolean = false;
   espacioFisico?: EspacioFisico;
@@ -49,8 +48,7 @@ export class NewEditEspacioFisicoComponent {
 
     this.recursoTecnologicoService.getRecursosTecnologicos().subscribe({
       next: (v) => {
-        this.recursosTecnologicos = v;
-        this.recursosTecnologicosCopy = v;
+        this.recursosTecnologicosPage = v;
         this.spinner.hide();
       },
       error: (e) => {
