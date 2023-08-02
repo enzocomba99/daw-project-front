@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { EspacioFisico } from '../interfaces/espacio-fisico';
 import { PageResponse } from '../interfaces/page-response';
 import { Injectable } from '@angular/core';
+import { SortDirection } from '@angular/material/sort';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,15 @@ export class EspacioFisicoService {
 
   constructor(private http: HttpClient) { }
 
-  getEspaciosFisicos(page: number): Observable<PageResponse<EspacioFisico[]>> {
-    return this.http.get<PageResponse<EspacioFisico[]>>('http://localhost:8080/espacios?page='+page+'&size=10');
+  getEspaciosFisicos(page: number, name: string, capacity: number, sort: string, order: SortDirection): Observable<PageResponse<EspacioFisico[]>> {
+    let filters = '';
+    if(name){
+      filters = '&nombre='+name;
+    }
+    if(capacity && capacity>=0){
+      filters = filters + '&capacidad='+capacity;
+    }
+    return this.http.get<PageResponse<EspacioFisico[]>>('http://localhost:8080/espacios?page='+page+'&size=10'+filters+'&sort='+sort+'&order='+order);
   }
 
   getEspacioFisicoById(id: string): Observable<EspacioFisico> {

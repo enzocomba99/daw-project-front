@@ -1,15 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { EspacioFisico } from 'src/app/interfaces/espacio-fisico';
 import { PageResponse } from 'src/app/interfaces/page-response';
 import { EspacioFisicoService } from 'src/app/services/espacio-fisico.service';
 import {NgxSpinnerService} from "ngx-spinner";
-import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {MatSort, Sort} from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { catchError, firstValueFrom, map, merge, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-espacio-fisico',
@@ -17,6 +20,9 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./espacio-fisico.component.scss']
 })
 export class EspacioFisicoComponent {
+  @ViewChild(MatSort) sort: MatSort = new MatSort();
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
   constructor(
       private espaciosService: EspacioFisicoService,
       private spinner: NgxSpinnerService,
@@ -26,40 +32,50 @@ export class EspacioFisicoComponent {
       private snackBar: MatSnackBar,
       public dialog: MatDialog
     ) { 
-      this.filterForm = new FormGroup({})
+      
     }
-  displayedColumns: string[] = ['name', 'description', 'capacity','actions'];
+  displayedColumns: string[] = ['nombre', 'descripcion', 'capacidad','recursos','actions'];
   espaciosFisicoPage!: PageResponse<EspacioFisico[]>;
   currentPage: number = 0;
   headerColor = 'rgb(88,88,88)';
-  filterForm: FormGroup;
+  filterName: string = '';
+  filterCapacity: any = null;
+  dataSource!: MatTableDataSource<any>;
+  totalElements: number = 0;
+  isLoadingResults = true;
+  isRateLimitReached = false;
 
   ngOnInit() {
-    this.fetchItems(this.currentPage);
+    this.fetchItems();
   }  
+  sortData() {
+    this.fetchItems();
+  }
 
-  async fetchItems(page: number) {
+  async fetchItems() {
     await this.spinner.show();
-    this.espaciosService.getEspaciosFisicos(page).subscribe({
-      next: (v) => {
-        this.espaciosFisicoPage = v;
-        this.spinner.hide();
-      },
-      error: (e) => {
-        console.error(e)
-        this.spinner.hide();
-      }
-    });
+    const response: PageResponse<EspacioFisico[]> | undefined = 
+    await firstValueFrom(this.espaciosService.getEspaciosFisicos(
+      this.currentPage,
+      this.filterName,
+      this.filterCapacity,
+      this.sort.active,
+      this.sort.direction,
+    ));
 
+    if (response !== undefined) {
+      this.espaciosFisicoPage = response;
+      this.totalElements = this.espaciosFisicoPage.totalElements;
+      this.dataSource = new MatTableDataSource(response.content);
+      this.dataSource.sort = this.sort;
+    }
+    this.spinner.hide();
   }
 
   async onPageChange(event: any) {
     this.currentPage = event.pageIndex;
-    await this.fetchItems(this.currentPage);
+    await this.fetchItems();
   }
-
-
-
 
   delete(espacioFisico: EspacioFisico) {
     const dialogRef = this.openDialog('0ms', '0ms', "Eliminar espacio físico", "Está seguro que desea eliminar el espacio físico "+espacioFisico.nombre+"?")
@@ -70,7 +86,7 @@ export class EspacioFisicoComponent {
         this.espaciosService.deleteEspacioFisico(espacioFisico.id).subscribe({
           complete: () => {
             this.snackBar.open('Se ha borrado el espacio fisico correctamente.',"Cerrar");
-            this.fetchItems(this.currentPage);
+            this.fetchItems();
             this.spinner.hide();
           },
           error: (e) => {
@@ -81,8 +97,8 @@ export class EspacioFisicoComponent {
         });
       }
     });
-    
   }
+
   openDialog(enterAnimationDuration: string, exitAnimationDuration: string, title: string, message: string) {
     return this.dialog.open(ModalComponent, {
       width: '250px',
@@ -92,6 +108,8 @@ export class EspacioFisicoComponent {
     });
   }
 
-
-
 }
+function observableOf(arg0: null): any {
+  throw new Error('Function not implemented.');
+}
+
