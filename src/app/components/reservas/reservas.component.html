@@ -1,0 +1,26 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "fire" [fullScreen] = "true">
+    <p style="color: white" > Cargando... </p>
+  </ngx-spinner>
+  
+  <ng-container>
+    <div class="d-flex justify-content-around mt-3 align-items-center">
+      <h1>Reservas</h1>
+      <div class="">
+        <mat-form-field style="margin-right: 10px;height:70px;">
+          <mat-label>Nombre</mat-label>
+          <input matInput [(ngModel)]="filterName"/>
+        </mat-form-field>
+        <mat-form-field style="margin-right: 15px;height:70px;">
+          <mat-label>Capacidad</mat-label>
+          <input matInput [(ngModel)]="filterCapacity" type="number"/>
+        </mat-form-field>  
+        <button mat-raised-button color="primary" (click)="fetchItems()" style="margin-bottom:15px">
+          <mat-icon>filter_list</mat-icon>
+          Filtrar
+        </button>
+      </div>
+      <div>
+        <button mat-raised-button color="accent" routerLink="new">Agregar reserva</button>
+      </div>
+    </div>
+  </ng-container>

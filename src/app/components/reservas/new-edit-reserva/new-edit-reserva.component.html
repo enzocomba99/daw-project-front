@@ -1,0 +1,61 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "fire" [fullScreen] = "true">
+    <p style="color: white" > Cargando... </p>
+  </ngx-spinner>
+
+  <div class="container mt-4">
+    <h1>Reserva</h1>
+    <form [formGroup]="reservaForm" fxLayout="column" fxLayoutAlign="start">
+        <mat-form-field>
+            <mat-label>Fecha actual</mat-label>
+            <input matInput formControlName="fechaCreacion" readonly required>
+          </mat-form-field>
+
+          <mat-grid-tile [colspan]="1" [rowspan]="1">
+            <mat-form-field class="ancho">
+            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha y hora Inicio"
+            formControlName="fechaHoraInicioReserva" 
+            [min]="minDate" 
+            (dateChange)="dateUpdated()" >
+            <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
+                                      [stepHour]="1" [stepMinute]="1" [stepSecond]="1"
+                                      [touchUi]="false" [enableMeridian]="false"
+                                      [disableMinute]="false" [hideTime]="false">
+            </ngx-mat-datetime-picker>
+          </mat-form-field> 
+          </mat-grid-tile>
+        
+    
+        <!-- <mat-form-field>
+            <mat-label>Fecha y hora inicial</mat-label>
+            <input matInput [matDatepicker]="pickerFechaHoraDesde" formControlName="fechaHoraDesdeReserva" required>
+            <mat-datepicker-toggle matSuffix [for]="pickerFechaHoraDesde"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFechaHoraDesde></mat-datepicker>
+        </mat-form-field> -->
+
+        <!-- <mat-form-field>
+          <input matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field> -->
+          
+        <!-- <mat-form-field>
+            <mat-label>Fecha y hora final</mat-label>
+            <input matInput [matDatepicker]="pickerFechaHoraHasta" formControlName="fechaHoraHastaReserva">
+            <mat-datepicker-toggle matSuffix [for]="pickerFechaHoraHasta"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFechaHoraHasta></mat-datepicker>
+        </mat-form-field> -->
+    </form>
+
+  <div class="d-flex justify-content-end align-items-right mb-2">
+    <div>
+      <button mat-raised-button color="warn" type="cancel" (click)="cancel()">
+        <span class="btn-inner--text">Cancelar</span>
+      </button>
+    </div>
+    <div>
+      <button *ngIf="editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px" (click)="editArticulo()" [disabled]="!reservaForm.valid">Editar Reserva</button>
+      <button *ngIf="!editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px; " [disabled]="!reservaForm.valid" (click)="newReserva()">Crear Reserva</button>
+    </div>
+  </div>
+</div>
