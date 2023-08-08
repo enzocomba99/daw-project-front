@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ComponentsModule } from './components/components.module';
 import { SharedModule } from './shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 
 @NgModule({
@@ -20,8 +19,6 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-mat
     ComponentsModule,
     SharedModule,
     FlexLayoutModule,
-    NgxMatTimepickerModule,
-    NgxMatDatetimePickerModule,
   ],  
   
   providers: [],

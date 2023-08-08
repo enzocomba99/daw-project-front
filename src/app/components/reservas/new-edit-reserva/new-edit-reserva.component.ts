@@ -12,7 +12,6 @@ import { ReservaService } from 'src/app/services/reserva.service';
 import { Reserva } from 'src/app/interfaces/reserva';
 import { ThemePalette } from '@angular/material/core';
 import * as moment from 'moment';
-import { MatDatepickerPanel } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-new-edit-reserva',
