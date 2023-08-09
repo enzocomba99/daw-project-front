@@ -10,20 +10,26 @@
             <input matInput formControlName="fechaCreacion" readonly required>
           </mat-form-field>
 
-          <mat-grid-tile [colspan]="1" [rowspan]="1">
-            <mat-form-field class="ancho">
-            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha y hora Inicio"
-            formControlName="fechaHoraInicioReserva" 
-            [min]="minDate" 
-            (dateChange)="dateUpdated()" >
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha y hora Inicio" formControlName="fechaHoraDesdeReserva">
             <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
-                                      [stepHour]="1" [stepMinute]="1" [stepSecond]="1"
-                                      [touchUi]="false" [enableMeridian]="false"
-                                      [disableMinute]="false" [hideTime]="false">
+            <ngx-mat-datetime-picker #picker [showSpinners]="true" [stepHour]="1" [stepMinute]="1" [stepSecond]="1">
             </ngx-mat-datetime-picker>
-          </mat-form-field> 
-          </mat-grid-tile>
+          </mat-form-field>
+
+         <!--  <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha y hora">
+            <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker #picker [showSpinners]="true">
+            </ngx-mat-datetime-picker>
+          </mat-form-field> -->  
+          
+          
+          <mat-form-field>
+            <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Datepicker 2">
+            <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker2></mat-datepicker>
+          </mat-form-field>
         
     
         <!-- <mat-form-field>

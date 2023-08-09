@@ -44,6 +44,7 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateMod
     MatNativeDateModule,
     NgxMatTimepickerModule,
     NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
   ],
   providers: [{provide: MatPaginatorIntl, useClass: PaginatorService}],
   imports: [

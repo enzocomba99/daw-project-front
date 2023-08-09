@@ -12,6 +12,8 @@ import { ReservaService } from 'src/app/services/reserva.service';
 import { Reserva } from 'src/app/interfaces/reserva';
 import { ThemePalette } from '@angular/material/core';
 import * as moment from 'moment';
+import { MatDatepickerPanel } from '@angular/material/datepicker';
+
 
 @Component({
   selector: 'app-new-edit-reserva',
@@ -32,14 +34,14 @@ export class NewEditReservaComponent {
   fechaActual = new Date();
 
   @ViewChild('picker') picker: any;
-   @ViewChild('picker2') picker2: any;
+  @ViewChild('picker2') picker2: any;
 
   public date!: moment.Moment;
-  public disabled = false;
-  public showSpinners = true;
-  public showSeconds = false;
-  public touchUi = false;
-  public enableMeridian = false;
+  //public disabled = false;
+  //public showSpinners = true;
+  //public showSeconds = false;
+  //public touchUi = false;
+  //public enableMeridian = false;
   public minDate: moment.Moment;
   public stepHour = 1;
   public stepMinute = 1;
