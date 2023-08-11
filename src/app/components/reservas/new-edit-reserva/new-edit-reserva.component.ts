@@ -12,18 +12,18 @@ import { Reserva } from 'src/app/interfaces/reserva';
 import { DatePipe, formatDate } from '@angular/common';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { Cliente } from 'src/app/interfaces/cliente';
+import * as moment from 'moment';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-new-edit-reserva',
   templateUrl: './new-edit-reserva.component.html',
-  styleUrls: ['./new-edit-reserva.component.scss']
+  styleUrls: ['./new-edit-reserva.component.scss'],
+
 })
 export class NewEditReservaComponent {
 
-  fechaActual = new Date();
-
   reservaForm: FormGroup;
-
   espaciosFisicosPage: PageResponse<EspacioFisico> | null = null; // Inicialización opcional
   clientesPage: PageResponse<Cliente> | null = null; // Inicialización opcional
   reservasPage!: PageResponse<Reserva>;
@@ -31,7 +31,7 @@ export class NewEditReservaComponent {
   editMode: boolean = false;
   reserva?: Reserva;
   selectedReserva: number | undefined;
-  
+  public minDate: moment.Moment = moment();
 
   @ViewChild('picker') picker: any;
   @ViewChild('picker') picker2: any;
@@ -40,7 +40,6 @@ export class NewEditReservaComponent {
     private espacioFisicoService: EspacioFisicoService,
     private clienteService: ClienteService,
     private reservaService: ReservaService,
-    private fb: FormBuilder,
     private router: Router,
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute,
@@ -51,9 +50,8 @@ export class NewEditReservaComponent {
 
   async ngOnInit() {
     
-    this.reservaForm.addControl('fechaCreacion', new FormControl(this.reserva?.fechaCreacion ?? this.fechaActual, [Validators.required]));
-    this.reservaForm.addControl('fechaHoraDesdeReserva', new FormControl(this.reserva?.fechaHoraDesdeReserva, [Validators.required]));
-    this.reservaForm.addControl('fechaHoraHastaReserva', new FormControl(this.reserva?.fechaHoraHastaReserva, [Validators.required]));
+    this.reservaForm.addControl('fechaHoraDesdeReserva', new FormControl(null, [Validators.required]));
+    this.reservaForm.addControl('fechaHoraHastaReserva', new FormControl(null, [Validators.required]));
     this.reservaForm.addControl('motivoReserva', new FormControl(this.reserva?.motivoReserva));
     this.reservaForm.addControl('clienteId', new FormControl(this.reserva?.cliente, [Validators.required]));
     this.reservaForm.addControl('espacioFisicoId', new FormControl(this.reserva?.espacioFisico, [Validators.required]));
@@ -74,7 +72,8 @@ export class NewEditReservaComponent {
       });
     }
   }
- 
+
+
   async getEspaciosFisicos(){
     this.espacioFisicoService.getEspaciosFisicos(0,100, undefined, undefined, 'nombre', 'asc').subscribe({
       next: (v) => {

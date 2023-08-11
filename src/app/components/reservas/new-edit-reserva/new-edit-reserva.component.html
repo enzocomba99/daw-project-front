@@ -5,31 +5,28 @@
   <div class="container mt-4">
     <h1>Reserva</h1>
     <form [formGroup]="reservaForm" fxLayout="column" fxLayoutAlign="start">
-      <mat-form-field>
-          <mat-label>Fecha actual</mat-label>
-          <input matInput [ngModel]="fechaActual" formControlName="fechaCreacion" readonly required>
-      </mat-form-field>
+
 
       <mat-form-field>
-        <mat-label>Fecha y hora inicio</mat-label>
-        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha y hora inicio" formControlName="fechaHoraDesdeReserva"
-        [min]="fechaActual">
+        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha y hora Inicio"
+        formControlName="fechaHoraDesdeReserva" 
+        [min]="minDate" >
         <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-        <ngx-mat-datetime-picker #picker >
+        <ngx-mat-datetime-picker #picker>
         </ngx-mat-datetime-picker>
-      </mat-form-field>
+      </mat-form-field> 
 
       <mat-form-field>
-        <mat-label>Fecha y hora fin</mat-label>
-        <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Fecha y hora fin" formControlName="fechaHoraHastaReserva"
-        [min]="fechaActual">
+        <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Fecha y hora Fin"
+        formControlName="fechaHoraHastaReserva" 
+        [min]="reservaForm.get('fechaHoraDesdeReserva')?.value" >
         <mat-datepicker-toggle matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
-        <ngx-mat-datetime-picker #picker2 >
+        <ngx-mat-datetime-picker #picker2>
         </ngx-mat-datetime-picker>
         <mat-error *ngIf="reservaForm.get('fechaHoraHastaReserva')?.hasError('invalidDateTimeRange')">
           La fecha y hora de fin deben ser mayores que la de inicio
         </mat-error>
-      </mat-form-field>
+      </mat-form-field> 
 
       <mat-form-field>
         <mat-label>Motivo Reserva</mat-label>

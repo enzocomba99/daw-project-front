@@ -21,6 +21,7 @@ import {MatSortModule} from '@angular/material/sort';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 
 @NgModule({
   declarations: [],
@@ -46,7 +47,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     NgxMatTimepickerModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    NgxMatMomentModule
   ],
   providers: [{provide: MatPaginatorIntl, useClass: PaginatorService}],
   imports: [
