@@ -55,9 +55,5 @@ export class ReservasComponent {
 
   async fetchItems() {}
 
-  
-    
-    
-
 }
 

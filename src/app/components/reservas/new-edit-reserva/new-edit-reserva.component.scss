@@ -1,0 +1,13 @@
+ngx-mat-timepicker {
+    .mat-form-field-appearance-outline {
+        width: 50px !important;
+        max-width: 50px !important;
+        .mat-form-field-wrapper {
+            padding-bottom: 0;
+        }
+
+        .mat-form-field-infix {
+            border-top: 0.36em solid transparent;
+        }
+    }
+}

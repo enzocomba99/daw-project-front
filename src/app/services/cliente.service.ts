@@ -17,3 +17,4 @@ export class ClienteService {
     return this.http.get<PageResponse<Cliente>>('http://localhost:8080/clients?page='+page+'&size='+size);
   }
 }
+

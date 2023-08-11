@@ -112,4 +112,3 @@ export class EspacioFisicoComponent {
 function observableOf(arg0: null): any {
   throw new Error('Function not implemented.');
 }
-
