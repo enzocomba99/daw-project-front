@@ -19,7 +19,7 @@
         formControlName="fechaHoraHastaReserva" 
         [min]="reservaForm.get('fechaHoraDesdeReserva')?.value" >
         <mat-datepicker-toggle matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
-        <ngx-mat-datetime-picker #picker2>
+        <ngx-mat-datetime-picker #picker2 [color]="color">
         </ngx-mat-datetime-picker>
         <mat-error *ngIf="reservaForm.get('fechaHoraHastaReserva')?.hasError('invalidDateTimeRange')">
           La fecha y hora de fin deben ser mayores que la de inicio

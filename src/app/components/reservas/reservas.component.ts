@@ -13,6 +13,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {MatSort, Sort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { catchError, firstValueFrom, map, merge, startWith, switchMap } from 'rxjs';
+import { ReservaService } from 'src/app/services/reserva.service';
+import { Reserva } from 'src/app/interfaces/reserva';
 
 
 @Component({
@@ -25,7 +27,7 @@ export class ReservasComponent {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
   constructor(
-      private espaciosService: EspacioFisicoService,
+      private reservaService: ReservaService,
       private spinner: NgxSpinnerService,
       public paginatorCustom: MatPaginatorIntl,
       private modalService: NgbModal,
@@ -35,25 +37,56 @@ export class ReservasComponent {
     ) { 
       
     }
-  displayedColumns: string[] = ['nombre', 'descripcion', 'capacidad','recursos','actions'];
-  espaciosFisicoPage!: PageResponse<EspacioFisico[]>;
+  displayedColumns: string[] = ['fechaCreacion', 'fechaDesde', 'fechaHasta', 'estado', 'espacioFisico', 'cliente', 'actions'];
+  reservas!: PageResponse<Reserva>;
   currentPage: number = 0;
   headerColor = 'rgb(88,88,88)';
   filterName: string = '';
-  filterCapacity: any = null;
+  filterEspacio: string = '';
+  size: string = '20';
+  page: string = '0';
   dataSource!: MatTableDataSource<any>;
   totalElements: number = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
 
   ngOnInit() {
-     this.fetchItems();
+    this.fetchItems();
   }  
+  
   sortData() {
     this.fetchItems();
   }
 
-  async fetchItems() {}
+  async onPageChange(event:any){
+    console.log('Cambio de pag')
+    // this.currentPage = event.pageIndex;
+    // await this.fetchItems(this.currentPage);
+  }
+
+
+  async fetchItems() {
+    await this.spinner.show();
+    this.reservaService.getReservas(this.filterName, this.filterEspacio, this.page, this.size)
+      .subscribe({
+        next: (reservas: PageResponse<Reserva>) => {
+          console.log(reservas)
+          this.reservas = reservas;
+          this.totalElements = this.reservas.totalElements;
+          this.dataSource = new MatTableDataSource(reservas.content);
+          this.dataSource.sort = this.sort;
+          this.spinner.hide()
+        },
+        error: (e: any) => {
+          console.log(e)
+          this.spinner.hide()
+        }
+      })
+  }
+
+  delete(reserva: Reserva) {
+    console.log('Eliminacion')
+  };
 
 }
 

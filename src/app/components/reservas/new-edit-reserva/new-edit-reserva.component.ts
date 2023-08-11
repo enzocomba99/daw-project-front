@@ -32,6 +32,7 @@ export class NewEditReservaComponent {
   reserva?: Reserva;
   selectedReserva: number | undefined;
   public minDate: moment.Moment = moment();
+  public color: ThemePalette = 'accent';
 
   @ViewChild('picker') picker: any;
   @ViewChild('picker') picker2: any;
@@ -149,3 +150,4 @@ export class NewEditReservaComponent {
 
     return null;
   }
+}
