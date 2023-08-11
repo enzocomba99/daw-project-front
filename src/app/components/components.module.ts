@@ -13,13 +13,17 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { RecursoTecnologicoComponent } from './recurso-tecnologico/recurso-tecnologico.component';
 import { NewEditRecursoTecnologicoComponent } from './recurso-tecnologico/new-edit-recurso-tecnologico/new-edit-recurso-tecnologico.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReservasComponent } from './reservas/reservas.component';
+import { NewEditReservaComponent } from './reservas/new-edit-reserva/new-edit-reserva.component';
 
 @NgModule({
     declarations: [
         EspacioFisicoComponent,
         NewEditEspacioFisicoComponent,
         RecursoTecnologicoComponent,
-        NewEditRecursoTecnologicoComponent
+        NewEditRecursoTecnologicoComponent,
+        ReservasComponent,
+        NewEditReservaComponent,
     ],
     exports: [
     ],
@@ -32,7 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         NgxSpinnerModule,
         AppRoutingModule,
         ReactiveFormsModule,
-        FlexLayoutModule
+        FlexLayoutModule,
     ],
 
 })

@@ -18,6 +18,9 @@ import {MatCheckboxModule } from '@angular/material/checkbox';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSortModule} from '@angular/material/sort';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [],
@@ -39,6 +42,11 @@ import {MatSortModule} from '@angular/material/sort';
     MatSnackBarModule,
     MatDialogModule,
     MatSortModule,
+    MatNativeDateModule,
+    NgxMatTimepickerModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule,
+    MatDatepickerModule
   ],
   providers: [{provide: MatPaginatorIntl, useClass: PaginatorService}],
   imports: [

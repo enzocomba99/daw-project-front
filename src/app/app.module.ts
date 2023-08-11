@@ -7,9 +7,17 @@ import { ComponentsModule } from './components/components.module';
 import { SharedModule } from './shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -17,7 +25,15 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     BrowserAnimationsModule,
     ComponentsModule,
     SharedModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatInputModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
   ],  
   providers: [],
   bootstrap: [AppComponent]

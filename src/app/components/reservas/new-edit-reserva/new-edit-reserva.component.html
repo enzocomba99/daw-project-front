@@ -1,0 +1,66 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "fire" [fullScreen] = "true">
+    <p style="color: white" > Cargando... </p>
+  </ngx-spinner>
+
+  <div class="container mt-4">
+    <h1>Reserva</h1>
+    <form [formGroup]="reservaForm" fxLayout="column" fxLayoutAlign="start">
+      <mat-form-field>
+          <mat-label>Fecha actual</mat-label>
+          <input matInput [ngModel]="fechaActual" formControlName="fechaCreacion" readonly required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Fecha y hora inicio</mat-label>
+        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha y hora inicio" formControlName="fechaHoraDesdeReserva"
+        [min]="fechaActual">
+        <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #picker >
+        </ngx-mat-datetime-picker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Fecha y hora fin</mat-label>
+        <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Fecha y hora fin" formControlName="fechaHoraHastaReserva"
+        [min]="fechaActual">
+        <mat-datepicker-toggle matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #picker2 >
+        </ngx-mat-datetime-picker>
+        <mat-error *ngIf="reservaForm.get('fechaHoraHastaReserva')?.hasError('invalidDateTimeRange')">
+          La fecha y hora de fin deben ser mayores que la de inicio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Motivo Reserva</mat-label>
+        <textarea matInput formControlName="motivoReserva"></textarea>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Cliente</mat-label>
+        <mat-select formControlName="clienteId">
+          <mat-option *ngFor="let cliente of clientesPage?.content" [value]="cliente.id">{{ cliente.nombre + ' ' + cliente.apellido }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Espacios Fisicos</mat-label>
+        <mat-select formControlName="espacioFisicoId">
+           <mat-option *ngFor="let espacioFisico of espaciosFisicosPage?.content" [value]="espacioFisico.id">{{ espacioFisico.nombre }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+
+  <div class="d-flex justify-content-end align-items-right mb-2">
+    <div>
+      <button mat-raised-button color="warn" type="cancel" (click)="cancel()">
+        <span class="btn-inner--text">Cancelar</span>
+      </button>
+    </div>
+    <div>
+      <button *ngIf="editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px" (click)="editReserva()" [disabled]="!reservaForm.valid">Editar Reserva</button>
+      <button *ngIf="!editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px; " [disabled]="!reservaForm.valid" (click)="newReserva()">Crear Reserva</button>
+    </div>
+  </div>
+</div>
