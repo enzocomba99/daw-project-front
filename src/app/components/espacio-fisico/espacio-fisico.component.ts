@@ -55,6 +55,7 @@ export class EspacioFisicoComponent {
   async fetchItems() {
     await this.spinner.show();
     const response: PageResponse<EspacioFisico> | undefined = 
+
     await firstValueFrom(this.espaciosService.getEspaciosFisicos(
       this.currentPage,10,
       this.filterName,
@@ -62,6 +63,7 @@ export class EspacioFisicoComponent {
       this.sort.active,
       this.sort.direction,
     ));
+
     
     if (response !== undefined) {
       this.espaciosFisicoPage = response;
