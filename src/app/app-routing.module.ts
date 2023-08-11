@@ -19,7 +19,6 @@ const routes: Routes = [
   { path: 'reservas', component: ReservasComponent},
   { path: 'reservas/new', component: NewEditReservaComponent },
   { path: 'reservas/edit/:id', component: NewEditReservaComponent },
-
 ];
 
 @NgModule({

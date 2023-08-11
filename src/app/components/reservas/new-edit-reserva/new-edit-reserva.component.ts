@@ -73,7 +73,6 @@ export class NewEditReservaComponent {
     }
   }
 
-
   async getEspaciosFisicos(){
     this.espacioFisicoService.getEspaciosFisicos(0,100, undefined, undefined, 'nombre', 'asc').subscribe({
       next: (v) => {
@@ -150,8 +149,3 @@ export class NewEditReservaComponent {
 
     return null;
   }
-
-  /* formatDate(date: Date): string {
-    return formatDate(date, 'MM/dd/yyyy', 'en');
-  } */
-}

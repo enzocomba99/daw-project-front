@@ -9,4 +9,6 @@ export interface Reserva {
     estado: any;
     espacioFisico: EspacioFisico;
     cliente: any;
+
 }
+

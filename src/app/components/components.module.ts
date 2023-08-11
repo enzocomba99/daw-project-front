@@ -30,6 +30,7 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
   }
 };
 
+
 @NgModule({
     declarations: [
         EspacioFisicoComponent,
@@ -56,6 +57,5 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
     providers: [
       { provide: NGX_MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS }
     ]
-
 })
 export class ComponentsModule { }
