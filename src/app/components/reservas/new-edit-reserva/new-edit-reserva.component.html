@@ -5,52 +5,51 @@
   <div class="container mt-4">
     <h1>Reserva</h1>
     <form [formGroup]="reservaForm" fxLayout="column" fxLayoutAlign="start">
-        <mat-form-field>
-            <mat-label>Fecha actual</mat-label>
-            <input matInput formControlName="fechaCreacion" readonly required>
-          </mat-form-field>
+      <mat-form-field>
+          <mat-label>Fecha actual</mat-label>
+          <input matInput [ngModel]="fechaActual" formControlName="fechaCreacion" readonly required>
+      </mat-form-field>
 
-          <mat-form-field>
-            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha y hora Inicio" formControlName="fechaHoraDesdeReserva">
-            <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #picker [showSpinners]="true" [stepHour]="1" [stepMinute]="1" [stepSecond]="1">
-            </ngx-mat-datetime-picker>
-          </mat-form-field>
+      <mat-form-field>
+        <mat-label>Fecha y hora inicio</mat-label>
+        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha y hora inicio" formControlName="fechaHoraDesdeReserva"
+        [min]="fechaActual">
+        <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #picker >
+        </ngx-mat-datetime-picker>
+      </mat-form-field>
 
-         <!--  <mat-form-field>
-            <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha y hora">
-            <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-            <ngx-mat-datetime-picker #picker [showSpinners]="true">
-            </ngx-mat-datetime-picker>
-          </mat-form-field> -->  
-          
-          
-          <mat-form-field>
-            <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Datepicker 2">
-            <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-            <mat-datepicker #datepicker2></mat-datepicker>
-          </mat-form-field>
-        
-    
-        <!-- <mat-form-field>
-            <mat-label>Fecha y hora inicial</mat-label>
-            <input matInput [matDatepicker]="pickerFechaHoraDesde" formControlName="fechaHoraDesdeReserva" required>
-            <mat-datepicker-toggle matSuffix [for]="pickerFechaHoraDesde"></mat-datepicker-toggle>
-            <mat-datepicker #pickerFechaHoraDesde></mat-datepicker>
-        </mat-form-field> -->
+      <mat-form-field>
+        <mat-label>Fecha y hora fin</mat-label>
+        <input matInput [ngxMatDatetimePicker]="picker2" placeholder="Fecha y hora fin" formControlName="fechaHoraHastaReserva"
+        [min]="fechaActual">
+        <mat-datepicker-toggle matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #picker2 >
+        </ngx-mat-datetime-picker>
+        <mat-error *ngIf="reservaForm.get('fechaHoraHastaReserva')?.hasError('invalidDateTimeRange')">
+          La fecha y hora de fin deben ser mayores que la de inicio
+        </mat-error>
+      </mat-form-field>
 
-        <!-- <mat-form-field>
-          <input matInput [matDatepicker]="picker">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field> -->
-          
-        <!-- <mat-form-field>
-            <mat-label>Fecha y hora final</mat-label>
-            <input matInput [matDatepicker]="pickerFechaHoraHasta" formControlName="fechaHoraHastaReserva">
-            <mat-datepicker-toggle matSuffix [for]="pickerFechaHoraHasta"></mat-datepicker-toggle>
-            <mat-datepicker #pickerFechaHoraHasta></mat-datepicker>
-        </mat-form-field> -->
+      <mat-form-field>
+        <mat-label>Motivo Reserva</mat-label>
+        <textarea matInput formControlName="motivoReserva"></textarea>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <mat-label>Cliente</mat-label>
+        <mat-select formControlName="clienteId">
+          <mat-option *ngFor="let cliente of clientesPage?.content" [value]="cliente.id">{{ cliente.nombre + ' ' + cliente.apellido }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Espacios Fisicos</mat-label>
+        <mat-select formControlName="espacioFisicoId">
+           <mat-option *ngFor="let espacioFisico of espaciosFisicosPage?.content" [value]="espacioFisico.id">{{ espacioFisico.nombre }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
     </form>
 
   <div class="d-flex justify-content-end align-items-right mb-2">
@@ -60,7 +59,7 @@
       </button>
     </div>
     <div>
-      <button *ngIf="editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px" (click)="editArticulo()" [disabled]="!reservaForm.valid">Editar Reserva</button>
+      <button *ngIf="editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px" (click)="editReserva()" [disabled]="!reservaForm.valid">Editar Reserva</button>
       <button *ngIf="!editMode" mat-raised-button color="accent" type="submit" style="margin-left:10px; " [disabled]="!reservaForm.valid" (click)="newReserva()">Crear Reserva</button>
     </div>
   </div>

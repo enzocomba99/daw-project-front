@@ -7,6 +7,6 @@ export interface Reserva {
     fechaCreacion: Date;
     motivoReserva: string;
     estado: any;
-    espacioFisico: EspacioFisico[];
+    espacioFisico: EspacioFisico;
     cliente: any;
 }

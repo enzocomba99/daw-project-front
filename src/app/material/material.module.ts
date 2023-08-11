@@ -19,7 +19,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSortModule} from '@angular/material/sort';
 import {MatNativeDateModule} from '@angular/material/core';
-import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
 
 @NgModule({
   declarations: [],
@@ -45,6 +46,7 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateMod
     NgxMatTimepickerModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
+    MatDatepickerModule 
   ],
   providers: [{provide: MatPaginatorIntl, useClass: PaginatorService}],
   imports: [

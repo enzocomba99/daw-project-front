@@ -35,7 +35,7 @@ export class EspacioFisicoComponent {
       
     }
   displayedColumns: string[] = ['nombre', 'descripcion', 'capacidad','recursos','actions'];
-  espaciosFisicoPage!: PageResponse<EspacioFisico[]>;
+  espaciosFisicoPage!: PageResponse<EspacioFisico>;
   currentPage: number = 0;
   headerColor = 'rgb(88,88,88)';
   filterName: string = '';
@@ -54,9 +54,9 @@ export class EspacioFisicoComponent {
 
   async fetchItems() {
     await this.spinner.show();
-    const response: PageResponse<EspacioFisico[]> | undefined = 
+    const response: PageResponse<EspacioFisico> | undefined = 
     await firstValueFrom(this.espaciosService.getEspaciosFisicos(
-      this.currentPage,
+      this.currentPage,10,
       this.filterName,
       this.filterCapacity,
       this.sort.active,

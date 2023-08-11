@@ -12,7 +12,7 @@ export class EspacioFisicoService {
 
   constructor(private http: HttpClient) { }
 
-  getEspaciosFisicos(page: number, name: string, capacity: number, sort: string, order: SortDirection): Observable<PageResponse<EspacioFisico[]>> {
+  getEspaciosFisicos(page: number = 0,size:number = 10, name: string | undefined, capacity: number | undefined, sort: string, order: SortDirection): Observable<PageResponse<EspacioFisico>> {
     let filters = '';
     if(name){
       filters = '&nombre='+name;
@@ -20,7 +20,7 @@ export class EspacioFisicoService {
     if(capacity && capacity>=0){
       filters = filters + '&capacidad='+capacity;
     }
-    return this.http.get<PageResponse<EspacioFisico[]>>('http://localhost:8080/espacios?page='+page+'&size=10'+filters+'&sort='+sort+'&order='+order);
+    return this.http.get<PageResponse<EspacioFisico>>('http://localhost:8080/espacios?page='+page+'&size='+size+filters+'&sort='+sort+'&order='+order);
   }
 
   getEspacioFisicoById(id: string): Observable<EspacioFisico> {

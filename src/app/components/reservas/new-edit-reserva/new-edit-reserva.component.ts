@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,14 +6,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { EspacioFisico } from 'src/app/interfaces/espacio-fisico';
 import { EspacioFisicoService } from 'src/app/services/espacio-fisico.service';
 import { RecursoTecnologicoService } from 'src/app/services/recurso-tecnologico.service';
-import { firstValueFrom } from 'rxjs';
 import { PageResponse } from 'src/app/interfaces/page-response';
 import { ReservaService } from 'src/app/services/reserva.service';
 import { Reserva } from 'src/app/interfaces/reserva';
-import { ThemePalette } from '@angular/material/core';
-import * as moment from 'moment';
-import { MatDatepickerPanel } from '@angular/material/datepicker';
-
+import { DatePipe, formatDate } from '@angular/common';
+import { ClienteService } from 'src/app/services/cliente.service';
+import { Cliente } from 'src/app/interfaces/cliente';
 
 @Component({
   selector: 'app-new-edit-reserva',
@@ -22,77 +20,91 @@ import { MatDatepickerPanel } from '@angular/material/datepicker';
 })
 export class NewEditReservaComponent {
 
+  fechaActual = new Date();
 
   reservaForm: FormGroup;
-  dateControl: FormControl;
 
+  espaciosFisicosPage: PageResponse<EspacioFisico> | null = null; // Inicialización opcional
+  clientesPage: PageResponse<Cliente> | null = null; // Inicialización opcional
   reservasPage!: PageResponse<Reserva>;
   reservaId!: string;
   editMode: boolean = false;
   reserva?: Reserva;
   selectedReserva: number | undefined;
-  fechaActual = new Date();
+  
 
   @ViewChild('picker') picker: any;
-  @ViewChild('picker2') picker2: any;
-
-  public date!: moment.Moment;
-  //public disabled = false;
-  //public showSpinners = true;
-  //public showSeconds = false;
-  //public touchUi = false;
-  //public enableMeridian = false;
-  public minDate: moment.Moment;
-  public stepHour = 1;
-  public stepMinute = 1;
-  public stepSecond = 1;
-  public color: ThemePalette = 'primary';
-
-  public fechaHoraInicio: moment.Moment | null = null;
-  public fechaHoraFin: moment.Moment | null = null;
+  @ViewChild('picker') picker2: any;
 
   constructor(
-    private espacioFisicoService: EspacioFisicoService,
-    private reservaService: ReservaService,
-    private fb: FormBuilder,
-    private router: Router,
-    private spinner: NgxSpinnerService,
-    private route: ActivatedRoute,
-    private snackBar: MatSnackBar) {
+                private espacioFisicoService: EspacioFisicoService,
+                private clienteService: ClienteService,
+                private reservaService: ReservaService,
+                private fb: FormBuilder,
+                private router: Router,
+                private spinner: NgxSpinnerService,
+                private route: ActivatedRoute,
+                private snackBar: MatSnackBar,
+                private datePipe: DatePipe) {
     this.reservaForm = new FormGroup({})
-
-    this.dateControl = new FormControl(); // Inicializamos la propiedad dateControl
-
-    // Inicializamos las propiedades minDate y maxDate (si es necesario)
-    this.minDate = moment();
   }
 
   async ngOnInit() {
-
-    if (this.reserva) {
-      this.reservaForm.addControl('fechaCreacion', new FormControl(this.reserva.fechaCreacion, [Validators.required]));
-    } else {
-      this.reservaForm.addControl('fechaCreacion', new FormControl(this.fechaActual, [Validators.required]));
-    }
-    this.reservaForm.addControl('fechaHoraDesdeReserva', new FormControl(this.reserva?.fechaHoraDesdeReserva));
+    
+    this.reservaForm.addControl('fechaCreacion', new FormControl(this.reserva?.fechaCreacion ?? this.fechaActual, [Validators.required]));
+    this.reservaForm.addControl('fechaHoraDesdeReserva', new FormControl(this.reserva?.fechaHoraDesdeReserva, [Validators.required]));
     this.reservaForm.addControl('fechaHoraHastaReserva', new FormControl(this.reserva?.fechaHoraHastaReserva, [Validators.required]));
     this.reservaForm.addControl('motivoReserva', new FormControl(this.reserva?.motivoReserva));
-    this.reservaForm.addControl('habilitado', new FormControl(this.reserva?.motivoReserva));
-    this.reservaForm.addControl('clienteId', new FormControl([]));
-    this.reservaForm.addControl('estadoId', new FormControl([]));
-    this.reservaForm.addControl('espaciosFisicosId', new FormControl([]));
+    this.reservaForm.addControl('clienteId', new FormControl(this.reserva?.cliente, [Validators.required]));
+    this.reservaForm.addControl('espacioFisicoId', new FormControl(this.reserva?.espacioFisico, [Validators.required]));
+
+    this.getEspaciosFisicos();
+    this.getClientes();
+
+    const fechaHoraDesdeReservaControl = this.reservaForm.get('fechaHoraDesdeReserva');
+    const fechaHoraHastaReservaControl = this.reservaForm.get('fechaHoraHastaReserva');
+
+    if (fechaHoraHastaReservaControl && fechaHoraDesdeReservaControl) {
+      fechaHoraDesdeReservaControl.valueChanges.subscribe(() => {
+        this.dateValidation(this.reservaForm);
+      });
+
+      fechaHoraHastaReservaControl.valueChanges.subscribe(() => {
+        this.dateValidation(this.reservaForm);
+      });
+    }
+  }
+ 
+  async getEspaciosFisicos(){
+    this.espacioFisicoService.getEspaciosFisicos(0,100, undefined, undefined, 'nombre', 'asc').subscribe({
+      next: (v) => {
+        this.espaciosFisicosPage = v;
+        this.spinner.hide();
+      },
+      error: (e) => {
+        console.error(e);
+        this.spinner.hide();
+      }
+    });
   }
 
-   // Método para actualizar las propiedades de fechas y horas de inicio y fin
-   dateUpdated() {
-    this.fechaHoraInicio = moment(this.reservaForm.get('fechaHoraDesdeReserva')?.value);
-    this.fechaHoraFin = moment(this.reservaForm.get('fechaHoraHastaReserva')?.value);
-   }
+  async getClientes(){
+    this.clienteService.getClientes(0,100, undefined, undefined).subscribe({
+      next: (v) => {
+        this.clientesPage = v;
+        this.spinner.hide();
+      },
+      error: (e) => {
+        console.error(e);
+        this.spinner.hide();
+      }
+    });
+  }
 
   async newReserva() {
     await this.spinner.show();
     console.log(this.reservaForm);
-    /* this.reservaService.newReserva(this.reservaForm.value).subscribe({
+    this.reservaService.newReserva(this.reservaForm.value).subscribe({
       complete: () => {
         this.snackBar.open('Se ha creado la reserva correctamente.',"Cerrar");
         this.router.navigateByUrl('/reservas');
@@ -103,16 +115,44 @@ export class NewEditReservaComponent {
         console.error(e);
         this.spinner.hide();
       }
-    }); */
-
+    }); 
   }
 
-  async editArticulo(){
+  async editReserva(){
     console.log('se editó');
   }
 
   async cancel(){
-    console.log('se cancelo');
+    this.router.navigateByUrl('/reservas');
   }
 
+
+  dateValidation(reservaForm: FormGroup) {
+    const startDateControl = reservaForm.get('fechaHoraDesdeReserva');
+    const endDateControl = reservaForm.get('fechaHoraHastaReserva');
+
+    if (!startDateControl || !endDateControl) {
+      return null;
+    }
+
+    const startDate = startDateControl.value;
+    const endDate = endDateControl.value;
+
+    if (startDate && endDate) {
+      const startTime = new Date(startDate).getTime();
+      const endTime = new Date(endDate).getTime();
+
+      if (startTime >= endTime) {
+        endDateControl.setErrors({ invalidDateTimeRange: true });
+      } else {
+        endDateControl.setErrors(null);
+      }
+    }
+
+    return null;
+  }
+
+  /* formatDate(date: Date): string {
+    return formatDate(date, 'MM/dd/yyyy', 'en');
+  } */
 }
