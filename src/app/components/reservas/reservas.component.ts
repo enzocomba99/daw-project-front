@@ -85,8 +85,34 @@ export class ReservasComponent {
   }
 
   delete(reserva: Reserva) {
-    console.log('Eliminacion')
+    const dialogRef = this.openDialog('0ms', '0ms', "Eliminar reserva", "Está seguro que desea eliminar la reserva?")
+  
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result == "Si") {
+        await this.spinner.show();
+        this.reservaService.deleteReserva(reserva.id).subscribe({
+          complete: () => {
+            this.snackBar.open('Se ha borrado la reserva correctamente.',"Cerrar");
+            this.fetchItems();
+            this.spinner.hide();
+          },
+          error: (e) => {
+            this.snackBar.open(e.error.message,"Cerrar");
+            console.error(e);
+            this.spinner.hide();
+          }
+        });
+      }
+    });
   };
 
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, title: string, message: string) {
+    return this.dialog.open(ModalComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: { title: title, message: message },
+    });
+  }
 }
 

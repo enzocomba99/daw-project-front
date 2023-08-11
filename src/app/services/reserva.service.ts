@@ -29,5 +29,9 @@ export class ReservaService {
   editReserva(id:string, reserva: Reserva): Observable<Reserva> {
     return this.http.put<Reserva>('http://localhost:8080/reservas/'+id, reserva);
   }
+
+  deleteReserva(id: string) {
+    return this.http.delete('http://localhost:8080/reservas/'+id);
+  }
 }
 

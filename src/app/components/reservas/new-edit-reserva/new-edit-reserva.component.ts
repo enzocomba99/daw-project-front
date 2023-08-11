@@ -75,27 +75,25 @@ export class NewEditReservaComponent {
       });
     }
 
-    if(this.route.snapshot.paramMap.get('id')){
-      this.reservaId = this.route.snapshot.paramMap.get('id')?? "";
-      this.editMode = true;
-      await this.setForm();
+    if(this.route.snapshot.routeConfig?.path?.includes('new/')){
+      const espacioFisicoId = this.route.snapshot.paramMap.get('id')?? "";
+      this.espacioFisicoService.getEspacioFisicoById(espacioFisicoId)
+      const espacioFisico = await firstValueFrom(this.espacioFisicoService.getEspacioFisicoById(espacioFisicoId));
+      this.reservaForm.get('espacioFisicoId')?.setValue(espacioFisico);
+    }else{
+      if(this.route.snapshot.paramMap.get('id')){
+        this.reservaId = this.route.snapshot.paramMap.get('id')?? "";
+        this.editMode = true;
+        await this.setForm();
+      }
     }
     this.spinner.hide();
-
-
   }
 
   async setForm() {
 
     this.reserva = await firstValueFrom(this.reservaService.getReservaById(this.reservaId));
     if(this.reserva){
-
-      this.reservaForm.addControl('fechaHoraDesdeReserva', new FormControl(null, [Validators.required]));
-      this.reservaForm.addControl('fechaHoraHastaReserva', new FormControl(null, [Validators.required]));
-      this.reservaForm.addControl('motivoReserva', new FormControl(this.reserva?.motivoReserva));
-      this.reservaForm.addControl('clienteId', new FormControl(this.reserva?.cliente, [Validators.required]));
-      this.reservaForm.addControl('espacioFisicoId', new FormControl(this.reserva?.espacioFisico, [Validators.required]));
-
       this.reservaForm.get('fechaHoraDesdeReserva')?.setValue(this.reserva?.fechaHoraDesdeReserva);
       this.reservaForm.get('fechaHoraHastaReserva')?.setValue(this.reserva?.fechaHoraHastaReserva);
       this.reservaForm.get('motivoReserva')?.setValue(this.reserva?.motivoReserva);
@@ -135,6 +133,8 @@ export class NewEditReservaComponent {
 
   async newReserva() {
     await this.spinner.show();
+    this.reservaForm.value.espacioFisicoId = this.reservaForm.value.espacioFisicoId.id;
+    this.reservaForm.value.clienteId = this.reservaForm.value.clienteId.id;
     this.reservaService.newReserva(this.reservaForm.value).subscribe({
       complete: () => {
         this.snackBar.open('Se ha creado la reserva correctamente.',"Cerrar");
@@ -151,6 +151,8 @@ export class NewEditReservaComponent {
 
   async editReserva(){
     await this.spinner.show();
+    this.reservaForm.value.espacioFisicoId = this.reservaForm.value.espacioFisicoId.id;
+    this.reservaForm.value.clienteId = this.reservaForm.value.clienteId.id;
     this.reservaService.editReserva(this.reservaId, this.reservaForm.value).subscribe({
       complete: () => {
         this.snackBar.open('Se ha editado la reserva correctamente.',"Cerrar");
@@ -169,9 +171,13 @@ export class NewEditReservaComponent {
     this.router.navigateByUrl('/reservas');
   }
 
-  compare(object1: string, object2: Reserva): boolean {
+  compare(object1: any, object2: Reserva): boolean {
     if(object1 != undefined && object2 != undefined){
-      return object1 === object2.id;
+      if(object1.id){
+        return object1.id === object2.id;
+      }else{
+        return object1 === object2.id;
+      }
     }else{
       return false;
     }
