@@ -14,6 +14,7 @@ import { ClienteService } from 'src/app/services/cliente.service';
 import { Cliente } from 'src/app/interfaces/cliente';
 import * as moment from 'moment';
 import { ThemePalette } from '@angular/material/core';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-new-edit-reserva',
@@ -50,6 +51,7 @@ export class NewEditReservaComponent {
 
   async ngOnInit() {
     
+    this.spinner.show();
     this.reservaForm.addControl('fechaHoraDesdeReserva', new FormControl(null, [Validators.required]));
     this.reservaForm.addControl('fechaHoraHastaReserva', new FormControl(null, [Validators.required]));
     this.reservaForm.addControl('motivoReserva', new FormControl(this.reserva?.motivoReserva));
@@ -70,6 +72,37 @@ export class NewEditReservaComponent {
       fechaHoraHastaReservaControl.valueChanges.subscribe(() => {
         this.dateValidation(this.reservaForm);
       });
+    }
+
+    if(this.route.snapshot.paramMap.get('id')){
+      this.reservaId = this.route.snapshot.paramMap.get('id')?? "";
+      this.editMode = true;
+      await this.setForm();
+    }
+    this.spinner.hide();
+
+
+  }
+
+  async setForm() {
+
+    this.reserva = await firstValueFrom(this.reservaService.getReservaById(this.reservaId));
+    if(this.reserva){
+
+      this.reservaForm.addControl('fechaHoraDesdeReserva', new FormControl(null, [Validators.required]));
+      this.reservaForm.addControl('fechaHoraHastaReserva', new FormControl(null, [Validators.required]));
+      this.reservaForm.addControl('motivoReserva', new FormControl(this.reserva?.motivoReserva));
+      this.reservaForm.addControl('clienteId', new FormControl(this.reserva?.cliente, [Validators.required]));
+      this.reservaForm.addControl('espacioFisicoId', new FormControl(this.reserva?.espacioFisico, [Validators.required]));
+
+      this.reservaForm.get('fechaHoraDesdeReserva')?.setValue(this.reserva?.fechaHoraDesdeReserva);
+      this.reservaForm.get('fechaHoraHastaReserva')?.setValue(this.reserva?.fechaHoraHastaReserva);
+      this.reservaForm.get('motivoReserva')?.setValue(this.reserva?.motivoReserva);
+      this.reservaForm.get('clienteId')?.setValue(this.reserva?.cliente);
+      this.reservaForm.get('espacioFisicoId')?.setValue(this.reserva?.espacioFisico);
+    }else{
+      this.snackBar.open('No se encontro la reserva',"Cerrar");
+      this.router.navigateByUrl('/reservas');
     }
   }
 
@@ -101,7 +134,6 @@ export class NewEditReservaComponent {
 
   async newReserva() {
     await this.spinner.show();
-    console.log(this.reservaForm);
     this.reservaService.newReserva(this.reservaForm.value).subscribe({
       complete: () => {
         this.snackBar.open('Se ha creado la reserva correctamente.',"Cerrar");
@@ -117,11 +149,31 @@ export class NewEditReservaComponent {
   }
 
   async editReserva(){
-    console.log('se editó');
+    await this.spinner.show();
+    this.reservaService.editReserva(this.reservaId, this.reservaForm.value).subscribe({
+      complete: () => {
+        this.snackBar.open('Se ha editado la reserva correctamente.',"Cerrar");
+        this.router.navigateByUrl('/reservas');
+        this.spinner.hide();
+      },
+      error: (e) => {
+        this.snackBar.open(e.error.message,"Cerrar");
+        console.error(e);
+        this.spinner.hide();
+      }
+    }); 
   }
 
   async cancel(){
     this.router.navigateByUrl('/reservas');
+  }
+
+  compare(object1: string, object2: Reserva): boolean {
+    if(object1 != undefined && object2 != undefined){
+      return object1 === object2.id;
+    }else{
+      return false;
+    }
   }
 
 
@@ -149,3 +201,4 @@ export class NewEditReservaComponent {
 
     return null;
   }
+}
