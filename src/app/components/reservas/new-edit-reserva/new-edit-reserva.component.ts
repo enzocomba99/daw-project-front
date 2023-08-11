@@ -25,8 +25,8 @@ import { firstValueFrom } from 'rxjs';
 export class NewEditReservaComponent {
 
   reservaForm: FormGroup;
-  espaciosFisicosPage: PageResponse<EspacioFisico> | null = null; // Inicialización opcional
-  clientesPage: PageResponse<Cliente> | null = null; // Inicialización opcional
+  espaciosFisicos: EspacioFisico[] = [];
+  clientesPage: PageResponse<Cliente> | null = null;
   reservasPage!: PageResponse<Reserva>;
   reservaId!: string;
   editMode: boolean = false;
@@ -106,9 +106,9 @@ export class NewEditReservaComponent {
   }
 
   async getEspaciosFisicos(){
-    this.espacioFisicoService.getEspaciosFisicos(0,100, undefined, undefined, 'nombre', 'asc').subscribe({
+    this.espacioFisicoService.getEspaciosFisicosHabilitados().subscribe({
       next: (v) => {
-        this.espaciosFisicosPage = v;
+        this.espaciosFisicos = v;
         this.spinner.hide();
       },
       error: (e) => {

@@ -13,9 +13,8 @@ export class ReservaService {
 
   constructor(private http: HttpClient) { }
 
-  getReservas(filtroNombre: string = '', filtroEspacio: string = '', page: string = '0', size: string = '20'): Observable<PageResponse<Reserva>> {
-    console.log(`http://localhost:8080/reservas?cliente=${filtroNombre}&espacio=${filtroEspacio}&page=${page}&size=${size}`)
-    return this.http.get<PageResponse<Reserva>>(`http://localhost:8080/reservas?cliente=${filtroNombre}&espacio=${filtroEspacio}&page=${page}&size=${size}`);
+  getReservas(filtroNombre: string = '', filtroEspacio: string = '', page: number, size: number, sort: string, order: SortDirection): Observable<PageResponse<Reserva>> {
+    return this.http.get<PageResponse<Reserva>>(`http://localhost:8080/reservas?cliente=${filtroNombre}&espacio=${filtroEspacio}&page=${page}&size=${size}&sort=${sort},${order}`);
   }
 
   getReservaById(id: string): Observable<Reserva> {

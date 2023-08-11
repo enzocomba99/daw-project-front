@@ -6,11 +6,11 @@ import { RecursoTecnologicoService } from 'src/app/services/recurso-tecnologico.
 import { FormGroup } from '@angular/forms';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { MatSnackBar} from '@angular/material/snack-bar';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
-import {MatSort, Sort} from '@angular/material/sort';
+import {MatSort} from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-recurso-tecnologico',
@@ -23,8 +23,6 @@ export class RecursoTecnologicoComponent {
     private recursoTecnologicoService: RecursoTecnologicoService,
     private spinner: NgxSpinnerService,
     public paginatorCustom: MatPaginatorIntl,
-    private modalService: NgbModal,
-    private router: Router,
     private snackBar: MatSnackBar,
     public dialog: MatDialog
     ){
@@ -37,37 +35,44 @@ export class RecursoTecnologicoComponent {
     headerColor = 'rgb(88,88,88)';
     filterForm: FormGroup;
     filterName: string = '';
+    dataSource!: MatTableDataSource<any>;
+    totalElements: number = 0;
 
     ngOnInit(){
-      this.fetchItems(this.currentPage);
+      this.fetchItems();
     }
 
     sortData() {
-      this.fetchItems(this.currentPage);
+      this.fetchItems();
     }
 
-    async fetchItems(page: number){
+    async fetchItems(){
       await this.spinner.show();
-      this.recursoTecnologicoService.getRecursosTecnologicos(
-          page, 
-          this.sort?.active,
-          this.sort?.direction,
+      try{
+        const response: PageResponse<RecursoTecnologico> | undefined = 
+        await firstValueFrom(this.recursoTecnologicoService.getRecursosTecnologicos(
+          this.currentPage, 
+          this.sort.active,
+          this.sort.direction,
           this.filterName,
-        ).subscribe({
-        next: (recursosTecnologicos: PageResponse<RecursoTecnologico>) => {
-          this.recursosTecnologicos = recursosTecnologicos;
-          this.spinner.hide();
-        },
-        error: (e: any) => {
-          console.error(e)
-          this.spinner.hide();
+        ));
+        if (response !== undefined) {
+          this.recursosTecnologicos = response;
+          this.totalElements = this.recursosTecnologicos.totalElements;
+          this.dataSource = new MatTableDataSource(response.content);
+          this.dataSource.sort = this.sort;
         }
-      })
+
+      }catch(error){
+        this.snackBar.open("Error en el backend","Cerrar");
+        this.spinner.hide();
+      }
+      this.spinner.hide();
     }
 
     async onPageChange(event:any){
       this.currentPage = event.pageIndex;
-      await this.fetchItems(this.currentPage);
+      await this.fetchItems();
     }
 
     delete(recursoTecnologico: RecursoTecnologico) {
@@ -79,7 +84,7 @@ export class RecursoTecnologicoComponent {
           this.recursoTecnologicoService.deleteRecursoTecnologico(recursoTecnologico.id).subscribe({
             complete: () => {
               this.snackBar.open('Se ha borrado el recurso tecnologico correctamente.',"Cerrar");
-              this.fetchItems(0);
+              this.fetchItems();
               this.spinner.hide();
             },
             error: (e) => {

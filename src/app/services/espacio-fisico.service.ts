@@ -23,6 +23,10 @@ export class EspacioFisicoService {
     return this.http.get<PageResponse<EspacioFisico>>('http://localhost:8080/espacios?page='+page+'&size='+size+filters+'&sort='+sort+'&order='+order);
   }
 
+  getEspaciosFisicosHabilitados(): Observable<EspacioFisico[]> {
+    return this.http.get<EspacioFisico[]>('http://localhost:8080/espacios/habilitados');
+  }
+
   getEspacioFisicoById(id: string): Observable<EspacioFisico> {
     return this.http.get<EspacioFisico>('http://localhost:8080/espacios/'+id);
   }

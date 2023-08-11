@@ -7,12 +7,12 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { ModalComponent } from 'src/app/shared/modal/modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatSnackBar} from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {MatSort, Sort} from '@angular/material/sort';
+import {MatSort} from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { catchError, firstValueFrom, map, merge, startWith, switchMap } from 'rxjs';
+import { firstValueFrom} from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-espacio-fisico',
@@ -34,7 +34,7 @@ export class EspacioFisicoComponent {
     ) { 
       
     }
-  displayedColumns: string[] = ['nombre', 'descripcion', 'capacidad','recursos','actions'];
+  displayedColumns: string[] = ['nombre', 'descripcion', 'capacidad','recursos','habilitado','actions'];
   espaciosFisicoPage!: PageResponse<EspacioFisico>;
   currentPage: number = 0;
   headerColor = 'rgb(88,88,88)';
@@ -42,8 +42,6 @@ export class EspacioFisicoComponent {
   filterCapacity: any = null;
   dataSource!: MatTableDataSource<any>;
   totalElements: number = 0;
-  isLoadingResults = true;
-  isRateLimitReached = false;
 
   ngOnInit() {
     this.fetchItems();
@@ -54,23 +52,26 @@ export class EspacioFisicoComponent {
 
   async fetchItems() {
     await this.spinner.show();
-    const response: PageResponse<EspacioFisico> | undefined = 
-
-    await firstValueFrom(this.espaciosService.getEspaciosFisicos(
-      this.currentPage,10,
-      this.filterName,
-      this.filterCapacity,
-      this.sort.active,
-      this.sort.direction,
-    ));
-
-    
-    if (response !== undefined) {
-      this.espaciosFisicoPage = response;
-      this.totalElements = this.espaciosFisicoPage.totalElements;
-      this.dataSource = new MatTableDataSource(response.content);
-      this.dataSource.sort = this.sort;
+    try{    
+      const response: PageResponse<EspacioFisico> | undefined = 
+      await firstValueFrom(this.espaciosService.getEspaciosFisicos(
+        this.currentPage,10,
+        this.filterName,
+        this.filterCapacity,
+        this.sort.active ?? 'nombre',
+        this.sort.direction ?? 'asc',
+      ));
+      if (response !== undefined) {
+        this.espaciosFisicoPage = response;
+        this.totalElements = this.espaciosFisicoPage.totalElements;
+        this.dataSource = new MatTableDataSource(response.content);
+        this.dataSource.sort = this.sort;
+      }
+    }catch(error){
+      this.snackBar.open("Error en el backend","Cerrar");
+      this.spinner.hide();
     }
+
     this.spinner.hide();
   }
 
@@ -110,7 +111,4 @@ export class EspacioFisicoComponent {
     });
   }
 
-}
-function observableOf(arg0: null): any {
-  throw new Error('Function not implemented.');
 }

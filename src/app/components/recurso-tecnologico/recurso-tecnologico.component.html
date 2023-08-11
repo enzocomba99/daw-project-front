@@ -2,7 +2,7 @@
     <p style="color: white" > Cargando... </p>
   </ngx-spinner>
   
-  <ng-container *ngIf="recursosTecnologicos">
+  <ng-container>
     <div class="d-flex justify-content-around mt-3 align-items-center">
       <h1>Recursos tecnologicos</h1>
       <div>
@@ -11,7 +11,7 @@
           <mat-label>Nombre</mat-label>
           <input matInput [(ngModel)]="filterName"/>
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="fetchItems(0)" style="margin-bottom:15px">
+        <button mat-raised-button color="primary" (click)="fetchItems()" style="margin-bottom:15px">
           <mat-icon>filter_list</mat-icon>
           Filtrar
         </button>
@@ -22,7 +22,7 @@
   
         <div class="first-element p-2">
           <table 
-            mat-table [dataSource]="recursosTecnologicos.content" 
+            mat-table [dataSource]="dataSource" 
             class="mat-elevation-z8"
             matSort
             matSortActive="nombre"
@@ -54,7 +54,7 @@
         </div>
         <div class="second-element p-2">
           <mat-paginator 
-            [length]="recursosTecnologicos.totalElements"
+            [length]="totalElements"
             [pageSize]="10"
             [pageIndex]="currentPage"
             [hidePageSize]="true"

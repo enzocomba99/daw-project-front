@@ -41,7 +41,7 @@
       <mat-form-field>
         <mat-label>Espacios Fisicos</mat-label>
         <mat-select formControlName="espacioFisicoId" [compareWith]="compare">
-           <mat-option *ngFor="let espacioFisico of espaciosFisicosPage?.content" [value]="espacioFisico">{{ espacioFisico.nombre }}</mat-option>
+           <mat-option *ngFor="let espacioFisico of espaciosFisicos" [value]="espacioFisico">{{ espacioFisico.nombre }}</mat-option>
         </mat-select>
       </mat-form-field>
 

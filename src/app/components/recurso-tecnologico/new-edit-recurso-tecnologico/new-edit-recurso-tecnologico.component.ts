@@ -66,8 +66,11 @@ export class NewEditRecursoTecnologicoComponent {
         this.spinner.hide();
       },
       error: (e) => {
-        this.snackBar.open(e.error.message,"Cerrar");
-        console.error(e);
+        if(e.error.message == undefined){
+          this.snackBar.open("Error en el backend.","Cerrar");
+        }else{
+          this.snackBar.open(e.error.message,"Cerrar");
+        }
         this.spinner.hide();
       }
     });
@@ -78,7 +81,7 @@ export class NewEditRecursoTecnologicoComponent {
     this.router.navigateByUrl('/recursos');
   }
 
-  async editArticulo() {
+  async editRecursoTecnologico() {
     await this.spinner.show();
     this.recursoTecnologicoService.updateRecursoTecnologico(this.recursoTecnologicoForm.value, this.recursoTecnologicoId).subscribe({
       complete: () => {

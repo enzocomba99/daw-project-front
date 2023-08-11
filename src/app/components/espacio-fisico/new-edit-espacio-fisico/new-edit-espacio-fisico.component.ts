@@ -90,8 +90,11 @@ export class NewEditEspacioFisicoComponent {
         this.spinner.hide();
       },
       error: (e) => {
-        this.snackBar.open(e.error.message,"Cerrar");
-        console.error(e);
+        if(e.error.message == undefined){
+          this.snackBar.open("Error en el backend.","Cerrar");
+        }else{
+          this.snackBar.open(e.error.message,"Cerrar");
+        }
         this.spinner.hide();
       }
     });
